@@ -25,11 +25,11 @@ Options:
 
 ```json
 {
-  "block_number": 4813775,
+  "block_number": 4813900,
   "block_time": 14.919,
-  "min": 0,
-  "low": 3.825,
-  "standard": 6,
+  "min": 0.1,
+  "low": 1,
+  "standard": 4,
   "fast": 20,
 }
 ```
