@@ -14,7 +14,7 @@ from requests.exceptions import RequestException
 
 
 ETH_RPC_URL = os.environ.get('ETH_RPC_URL', 'http://localhost:8545')
-QUANTILES = dict(low=35, standard=60, fast=90, instant=100)
+QUANTILES = dict(slow=35, standard=60, fast=90, instant=100)
 WINDOW = 200
 
 
