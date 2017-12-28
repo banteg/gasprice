@@ -9,7 +9,6 @@ from web3 import Web3, HTTPProvider
 from sanic import Sanic, response
 
 
-HOST, PORT = '127.0.0.1', 8000
 ETH_RPC_URL = 'http://localhost:8545'
 QUANTILES = dict(min=0, low=35, standard=60, fast=90)
 WINDOW = 100
@@ -21,8 +20,6 @@ blocks_gwei = deque(maxlen=WINDOW)
 stats = {}
 
 
-@click.command()
-@click.option('--skip-warmup', is_flag=True)
 def worker(skip_warmup):
     latest = w3.eth.filter('latest')
 
@@ -79,11 +76,15 @@ async def api(request):
     return response.json(stats)
 
 
-def main():
-    bg = Thread(target=worker)
+@click.command()
+@click.option('--host', '-h', default='127.0.0.1')
+@click.option('--port', '-p', default=8000)
+@click.option('--skip-warmup', '-s', is_flag=True)
+def main(host, port, skip_warmup):
+    bg = Thread(target=worker, args=(skip_warmup,))
     bg.daemon = True
     bg.start()
-    app.run(host=HOST, port=PORT, access_log=False)
+    app.run(host=host, port=port, access_log=False)
 
 
 if __name__ == '__main__':
