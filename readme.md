@@ -4,7 +4,7 @@ estimates ethereum gas price based on recent blocks and provides a simple api
 
 ## installation
 
-requires python 3.6 and an ethereum full node. you can use infura.io as well.
+requires python 3.6 and an ethereum full node. infura.io won't work as it doesn't allow setting up `filter`.
 
 ```bash
 pip install gasprice
