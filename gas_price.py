@@ -58,22 +58,24 @@ def process_block(n):
         t = sorted(block_times)
         stats['block_time'] = round(mean(b - a for a, b in zip(t, t[1:])), 3)
 
-    blocks_gwei.append(min(tx.gasPrice for tx in block.transactions))
-    data = pd.Series(blocks_gwei)
-    for name, q in QUANTILES.items():
-        price = data.quantile(q / 100)
-        stats[name] = round(float(w3.fromWei(price, 'gwei')), 3)
+    if block.transactions:
+        blocks_gwei.append(min(tx.gasPrice for tx in block.transactions))
+        data = pd.Series(blocks_gwei)
+        for name, q in QUANTILES.items():
+            price = data.quantile(q / 100)
+            stats[name] = round(float(w3.fromWei(price, 'gwei')), 3)
 
     return block
-
-
-app = Sanic()
-app.config.LOGO = ''
 
 
 @app.route('/')
 async def api(request):
     return response.json(stats)
+
+
+@app.route('/health')
+async def health(request):
+    return response.json({'health': stats['health']}, status=200 if stats['health'] else 503)
 
 
 @click.command()
