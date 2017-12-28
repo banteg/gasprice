@@ -1,4 +1,6 @@
+import os
 import click
+import logging
 import pandas as pd
 from time import sleep
 from threading import Thread
@@ -7,28 +9,36 @@ from statistics import mean
 from itertools import chain
 from web3 import Web3, HTTPProvider
 from sanic import Sanic, response
+from retry import retry
+from requests.exceptions import RequestException
 
 
-ETH_RPC_URL = 'http://localhost:8545'
-QUANTILES = dict(min=0, low=35, standard=60, fast=90)
+ETH_RPC_URL = os.environ.get('ETH_RPC_URL', 'http://localhost:8545')
+QUANTILES = dict(low=35, standard=60, fast=90)
 WINDOW = 100
 
 
 w3 = Web3(HTTPProvider(ETH_RPC_URL))
+app = Sanic()
+log = logging.getLogger('sanic.error')
+app.config.LOGO = ''
 block_times = deque(maxlen=WINDOW)
 blocks_gwei = deque(maxlen=WINDOW)
 stats = {}
 
 
+@retry(RequestException, delay=1, logger=log)
 def worker(skip_warmup):
+    stats['health'] = False
     latest = w3.eth.filter('latest')
 
-    if not skip_warmup:
+    if not skip_warmup and not block_times:
         warmup()
 
     while True:
         for n in latest.get_new_entries():
             block = process_block(n)
+            stats['health'] = True
             print(stats)
         sleep(1)
 
