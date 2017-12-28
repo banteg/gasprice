@@ -30,8 +30,11 @@ ethereum rpc url can be set with `ETH_RPC_URL` environment variable (default `ht
   "block_number": 4813900,
   "block_time": 14.9,
   "health": true,
-  "low": 1,
+  "slow": 1,
   "standard": 4,
   "fast": 20,
+  "instant": 40
 }
 ```
+
+`slow`, `standard`, `fast` and `instant` values represent minimal gas price of the latest 200 blocks. by default slow represents 30% probability, standard is 60%, fast is 90% and instant is 100%.

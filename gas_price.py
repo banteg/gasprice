@@ -14,8 +14,8 @@ from requests.exceptions import RequestException
 
 
 ETH_RPC_URL = os.environ.get('ETH_RPC_URL', 'http://localhost:8545')
-QUANTILES = dict(low=35, standard=60, fast=90)
-WINDOW = 100
+QUANTILES = dict(low=35, standard=60, fast=90, instant=100)
+WINDOW = 200
 
 
 w3 = Web3(HTTPProvider(ETH_RPC_URL))
