@@ -1,0 +1,10 @@
+[Unit]
+Description=gasprice
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/gasprice
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
