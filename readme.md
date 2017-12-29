@@ -2,6 +2,10 @@
 
 estimates ethereum gas price based on recent blocks and provides a simple api
 
+## hosted
+
+- https://gasprice.poa.network (kindly deployed by [poa network](https://poa.network))
+
 ## installation
 
 requires python 3.6 and an ethereum full node. infura.io won't work as it doesn't allow setting up `filter`.
@@ -9,6 +13,8 @@ requires python 3.6 and an ethereum full node. infura.io won't work as it doesn'
 ```bash
 pip install gasprice
 ```
+
+there is an example of systemd service if you want to run it as a service.
 
 ## usage
 
