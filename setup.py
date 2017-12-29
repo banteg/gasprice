@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='gasprice',
-    version='1.1.3',
+    version='1.1.4',
     description='predict ethereum gas price',
     url='https://github.com/banteg/gasprice',
     author='banteg',
