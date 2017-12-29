@@ -10,7 +10,6 @@ from itertools import chain
 from web3 import Web3, HTTPProvider
 from sanic import Sanic, response
 from retry import retry
-from requests.exceptions import RequestException
 
 
 ETH_RPC_URL = os.environ.get('ETH_RPC_URL', 'http://localhost:8545')
@@ -27,7 +26,7 @@ blocks_gwei = deque(maxlen=WINDOW)
 stats = {}
 
 
-@retry(RequestException, delay=1, logger=log)
+@retry(Exception, delay=1, logger=log)
 def worker(skip_warmup):
     stats['health'] = False
     latest = w3.eth.filter('latest')
@@ -37,7 +36,7 @@ def worker(skip_warmup):
 
     while True:
         for n in latest.get_new_entries():
-            block = process_block(n)
+            process_block(n)
             stats['health'] = True
             print(stats)
         sleep(1)
