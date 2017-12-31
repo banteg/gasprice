@@ -37,7 +37,7 @@ def worker(skip_warmup):
     while True:
         for n in latest.get_new_entries():
             process_block(n)
-            log.info(stats)
+            log.info(str(stats))
         if not w3.eth.syncing:
             stats['health'] = True
         sleep(1)
